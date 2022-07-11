@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+      <form id="formProductos" >
+        <div class="row d-flex justify-content-center">
+                  <form class= "w-50">
+                <div class="mb-3">
+                  <label for="title" class="form-label">Title</label>
+                  <input type="text" class="form-control" id="title" name="title">
+                </div>
+                <div class="mb-3">
+                  <label for="price" class="form-label">Price</label>
+                  <input type="text" class="form-control" id="price" name="price">
+                </div>
+                <div class="mb-3">
+                    <label for="thumbnail" class="form-label">Thumbnail</label>
+                    <input type="text" class="form-control" id="thumbnail" name="thumbnail">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <div>
+                  <button id="botonHandlebars" class="btn btn-dark">Handlebars</button>
+                </div>
+              </form>        
+        </div>
+    </div>
+    <script>
+       class Producto {
+        constructor(titulo, precio, imagen) {
+          this.titulo = titulo;
+          this.precio = precio;
+          this.imagen = imagen;
+        }
+      }
+      const $form = document.getElementById("formProductos");
+      $form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const $form = new FormData(event.target);
+        const nuevoProducto = new Producto (
+          $form.get("title"),
+          $form.get("price"),
+          $form.get("thumbnail"),
+        )
+          const response = fetch (`http://localhost:8080/api/productos`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(nuevoProducto),
+        })
+        const data = response.json()
+        $form.reset();
+      })
+    </script>
+</body>
+</html>
